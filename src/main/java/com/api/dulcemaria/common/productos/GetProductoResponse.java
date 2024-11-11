@@ -1,7 +1,6 @@
 package com.api.dulcemaria.common.productos;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public record GetProductoResponse(
     int id,

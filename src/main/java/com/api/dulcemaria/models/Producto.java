@@ -4,7 +4,6 @@ package com.api.dulcemaria.models;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "productos")
@@ -38,7 +37,7 @@ public class Producto {
     private String urlImg;
 
     @Column
-    private boolean esActivo;
+    private boolean esActivo = true;
 
     @Column
     private BigDecimal precioUnitario;

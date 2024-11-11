@@ -51,6 +51,7 @@ public class ProductoService {
     public List<GetProductoResponse> obtenerProductos() {
         List<Producto> productos = productosRepository.findAll();
 
+
         return productos.stream()
                  .map(producto -> productoMapping.ToProductoResponse(producto))
                  .collect(Collectors.toList());
