@@ -3,9 +3,7 @@ package com.api.dulcemaria.controllers;
 import com.api.dulcemaria.common.helpers.Error;
 import com.api.dulcemaria.common.helpers.Result;
 import com.api.dulcemaria.common.productos.CreateProductoRequest;
-import com.api.dulcemaria.common.productos.GetImgNameResponse;
 import com.api.dulcemaria.common.productos.GetProductoResponse;
-import com.api.dulcemaria.models.Producto;
 import com.api.dulcemaria.services.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,9 +26,9 @@ public class ProductoController {
     private static final String UPLOAD_DIR = "D:/Proyectos/sistema-ventas-almacen-dulcemania/src/dulcemaria/src/main/resources/static/uploads/productos/";
 
     @PostMapping("/uploadImage")
-    public ResponseEntity<Result<GetImgNameResponse>> uploadProductImage(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Result<String>> uploadProductImage(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
-            var error = Error.Validation("El archivo enviado no cumple el formato establecido");
+            Error error = new Error("validacion","El archivo enviado no cumple el formato establecido");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Result<>(error));
         }
 
@@ -42,26 +40,25 @@ public class ProductoController {
             Path path = Paths.get(UPLOAD_DIR + uniqueFileName);
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-            GetImgNameResponse response = new GetImgNameResponse(uniqueFileName);
-            return ResponseEntity.ok(new Result<>(response));
+            return ResponseEntity.ok(new Result<>(uniqueFileName));
         } catch (IOException e) {
-            Error internalError = Error.Unexpected("Error al procesar el archivo.");
+            Error internalError = new Error("Unexpected","Error al procesar el archivo.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Result<>(internalError));
         }
     }
 
     @PostMapping
-    public ResponseEntity<GetProductoResponse> createProducto(@RequestBody CreateProductoRequest request) {
+    public ResponseEntity<Result<GetProductoResponse>> createProducto(@RequestBody CreateProductoRequest request) {
         GetProductoResponse savedProducto = productoService.guardarProducto(request);
-        return new ResponseEntity<>(savedProducto, HttpStatus.CREATED);
+        return new ResponseEntity<>(new Result<>(savedProducto), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<GetProductoResponse>> getProductos() {
+    public ResponseEntity<Result<List<GetProductoResponse>>> getProductos() {
         List<GetProductoResponse> productosResponses = productoService.obtenerProductos();
         if (productosResponses.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(productosResponses, HttpStatus.OK);
+        return new ResponseEntity<>(new Result<>(productosResponses), HttpStatus.OK);
     }
 }

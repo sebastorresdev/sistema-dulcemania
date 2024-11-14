@@ -18,4 +18,16 @@ public class Result<T> {
         this.error = Optional.of(error);
         this.isSuccess = false;
     }
+
+    public Optional<T> getValue() {
+        return value;
+    }
+
+    public Optional<Error> getError() {
+        return error;
+    }
+
+    public boolean isSuccess() {
+        return isSuccess;
+    }
 }
