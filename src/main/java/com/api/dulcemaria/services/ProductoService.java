@@ -31,7 +31,7 @@ public class ProductoService {
     @Autowired
     private IMarcaRepository _marcaRepository;
 
-    public Producto guardarProducto(CreateProductoRequest productoRequest) {
+    public GetProductoResponse guardarProducto(CreateProductoRequest productoRequest) {
 
         Optional<Familia> familia = familiaRepository.findById(productoRequest.idFamilia());
 
@@ -45,7 +45,8 @@ public class ProductoService {
             throw new RuntimeException("Marca no encontrada con ID: " + productoRequest.idMarca());
         }
 
-        return productosRepository.save(productoMapping.ToProducto(productoRequest, familia.get(), marca.get()));
+        Producto productoCreado = productosRepository.save(productoMapping.ToProducto(productoRequest, familia.get(), marca.get()));
+        return productoMapping.ToProductoResponse(productoCreado);
     }
 
     public List<GetProductoResponse> obtenerProductos() {

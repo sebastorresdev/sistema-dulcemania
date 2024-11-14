@@ -1,6 +1,9 @@
 package com.api.dulcemaria.controllers;
 
+import com.api.dulcemaria.common.helpers.Error;
+import com.api.dulcemaria.common.helpers.Result;
 import com.api.dulcemaria.common.productos.CreateProductoRequest;
+import com.api.dulcemaria.common.productos.GetImgNameResponse;
 import com.api.dulcemaria.common.productos.GetProductoResponse;
 import com.api.dulcemaria.models.Producto;
 import com.api.dulcemaria.services.ProductoService;
@@ -13,6 +16,7 @@ import java.nio.file.*;
 import java.io.IOException;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/productos")
@@ -24,27 +28,31 @@ public class ProductoController {
     private static final String UPLOAD_DIR = "D:/Proyectos/sistema-ventas-almacen-dulcemania/src/dulcemaria/src/main/resources/static/uploads/productos/";
 
     @PostMapping("/uploadImage")
-    public ResponseEntity<String> uploadProductImage(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Result<GetImgNameResponse>> uploadProductImage(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No file uploaded");
+            var error = Error.Validation("El archivo enviado no cumple el formato establecido");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Result<>(error));
         }
 
         try {
-            String fileName = file.getOriginalFilename();
-            Path path = Paths.get(UPLOAD_DIR + fileName);
+            String originalFileName = file.getOriginalFilename();
+            String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            String uniqueFileName = UUID.randomUUID().toString() + extension;
+
+            Path path = Paths.get(UPLOAD_DIR + uniqueFileName);
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-            // Devuelve la URL de la imagen cargada
-            String fileUrl = "/uploads/productos/" + fileName;
-            return ResponseEntity.ok(fileUrl);
+            GetImgNameResponse response = new GetImgNameResponse(uniqueFileName);
+            return ResponseEntity.ok(new Result<>(response));
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving file");
+            Error internalError = Error.Unexpected("Error al procesar el archivo.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Result<>(internalError));
         }
     }
 
     @PostMapping
-    public ResponseEntity<Producto> createProducto(@RequestBody CreateProductoRequest request) {
-        Producto savedProducto = productoService.guardarProducto(request);
+    public ResponseEntity<GetProductoResponse> createProducto(@RequestBody CreateProductoRequest request) {
+        GetProductoResponse savedProducto = productoService.guardarProducto(request);
         return new ResponseEntity<>(savedProducto, HttpStatus.CREATED);
     }
 

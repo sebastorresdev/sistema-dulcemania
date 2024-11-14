@@ -35,7 +35,8 @@ public class ProductoMapping implements IProductoMapping {
                 producto.getPrecioUnitario(),
                 producto.getStock(),
                 producto.getUrlImg(),
-                producto.getStockMinimo()
+                producto.getStockMinimo(),
+                producto.getCodigoInterno()
         );
     }
 }

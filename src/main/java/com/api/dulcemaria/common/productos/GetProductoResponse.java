@@ -11,6 +11,7 @@ public record GetProductoResponse(
     BigDecimal precioUnitario,
     int stock,
     String urlImg,
-    int stockMinimo
+    int stockMinimo,
+    String codigoInterno
 ) {
 }
