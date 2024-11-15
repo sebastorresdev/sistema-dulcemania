@@ -12,6 +12,7 @@ public record GetProductoResponse(
     int stock,
     String urlImg,
     int stockMinimo,
-    String codigoInterno
+    String codigoInterno,
+    String codigoBarras
 ) {
 }

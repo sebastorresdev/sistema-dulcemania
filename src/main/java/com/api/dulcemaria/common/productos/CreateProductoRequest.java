@@ -9,7 +9,6 @@ public record CreateProductoRequest(
     int idFamilia,
     int idMarca,
     BigDecimal precioUnitario,
-    int stock,
     String codigoBarras,
     String urlImg
 ) {

@@ -14,13 +14,16 @@ public class ProductoMapping implements IProductoMapping {
         producto.setCodigoInterno(productoRequest.codigoInterno());
         producto.setDescripcion(productoRequest.descripcion());
         producto.setStockMinimo(productoRequest.stockMinimo());
-        producto.setStock(productoRequest.stock());
         producto.setFamilia(familia);
         producto.setMarca(marca);
         producto.setPrecioUnitario(productoRequest.precioUnitario());
         producto.setCodigoBarras(productoRequest.codigoBarras());
-        producto.setUrlImg(productoRequest.urlImg());
-
+        if (productoRequest.urlImg() == null) {
+            producto.setUrlImg("box.png");
+        }
+        else {
+            producto.setUrlImg(productoRequest.urlImg());
+        }
         return producto;
     }
 
@@ -36,7 +39,8 @@ public class ProductoMapping implements IProductoMapping {
                 producto.getStock(),
                 producto.getUrlImg(),
                 producto.getStockMinimo(),
-                producto.getCodigoInterno()
+                producto.getCodigoInterno(),
+                producto.getCodigoBarras()
         );
     }
 }

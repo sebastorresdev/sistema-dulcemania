@@ -4,6 +4,7 @@ import com.api.dulcemaria.common.helpers.Error;
 import com.api.dulcemaria.common.helpers.Result;
 import com.api.dulcemaria.common.productos.CreateProductoRequest;
 import com.api.dulcemaria.common.productos.GetProductoResponse;
+import com.api.dulcemaria.common.productos.UpdateProductoRequest;
 import com.api.dulcemaria.services.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,10 +56,24 @@ public class ProductoController {
 
     @GetMapping
     public ResponseEntity<Result<List<GetProductoResponse>>> getProductos() {
-        List<GetProductoResponse> productosResponses = productoService.obtenerProductos();
-        if (productosResponses.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+        List<GetProductoResponse> productosResponses = productoService.getProductos();
         return new ResponseEntity<>(new Result<>(productosResponses), HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<Result<GetProductoResponse>> updateProducto(@RequestBody UpdateProductoRequest request) {
+        try {
+            GetProductoResponse response = productoService.updateProductos(request);
+            return new ResponseEntity<>(new Result<>(response), HttpStatus.OK);
+        } catch (Exception e) {
+            Error internalError = new Error("Unexpected","Error al actualizar el archivo.");
+            return new ResponseEntity<>(new Result<>(internalError), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Result<Boolean>> deleteProducto(@PathVariable int id) {
+        boolean response = productoService.deleteProducto(id);
+        return new ResponseEntity<>(new Result<>(response), HttpStatus.OK);
     }
 }
