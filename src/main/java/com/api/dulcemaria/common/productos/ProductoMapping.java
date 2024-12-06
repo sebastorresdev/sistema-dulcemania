@@ -3,12 +3,13 @@ package com.api.dulcemaria.common.productos;
 import com.api.dulcemaria.models.Familia;
 import com.api.dulcemaria.models.Marca;
 import com.api.dulcemaria.models.Producto;
+import com.api.dulcemaria.models.UnidadMedida;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProductoMapping implements IProductoMapping {
     @Override
-    public Producto ToProducto(CreateProductoRequest productoRequest, Familia familia, Marca marca) {
+    public Producto ToProducto(CreateProductoRequest productoRequest, Familia familia, Marca marca, UnidadMedida unidadMedida) {
         Producto producto = new Producto();
 
         producto.setCodigoInterno(productoRequest.codigoInterno());
@@ -16,6 +17,7 @@ public class ProductoMapping implements IProductoMapping {
         producto.setStockMinimo(productoRequest.stockMinimo());
         producto.setFamilia(familia);
         producto.setMarca(marca);
+        producto.setUnidadMedida(unidadMedida);
         producto.setPrecioUnitario(productoRequest.precioUnitario());
         producto.setCodigoBarras(productoRequest.codigoBarras());
         if (productoRequest.urlImg() == null) {
@@ -40,7 +42,8 @@ public class ProductoMapping implements IProductoMapping {
                 producto.getUrlImg(),
                 producto.getStockMinimo(),
                 producto.getCodigoInterno(),
-                producto.getCodigoBarras()
+                producto.getCodigoBarras(),
+                producto.getUnidadMedida().getAbreviatura()
         );
     }
 }

@@ -21,6 +21,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // Configura la ruta para servir archivos desde uploads
         registry.addResourceHandler("/uploads/products/**")
-                .addResourceLocations("file:D:/Proyectos/sistema-ventas-almacen-dulcemania/src/dulcemaria/src/main/resources/static/uploads/productos/");
+                .addResourceLocations("file:D:/repos/sistema-ventas-almacen-dulcemania/src/dulcemaria/src/main/resources/static/uploads/productos/");
     }
 }

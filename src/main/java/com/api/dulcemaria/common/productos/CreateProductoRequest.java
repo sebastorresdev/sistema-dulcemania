@@ -8,6 +8,7 @@ public record CreateProductoRequest(
     int stockMinimo,
     int idFamilia,
     int idMarca,
+    int idUnidadMedida,
     BigDecimal precioUnitario,
     String codigoBarras,
     String urlImg

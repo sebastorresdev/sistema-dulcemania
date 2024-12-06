@@ -30,6 +30,18 @@ public class Producto {
     @JoinColumn(name = "id_familia", nullable = false)
     private Familia familia;
 
+    public UnidadMedida getUnidadMedida() {
+        return unidadMedida;
+    }
+
+    public void setUnidadMedida(UnidadMedida unidadMedida) {
+        this.unidadMedida = unidadMedida;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "id_unidad_medida")
+    private UnidadMedida unidadMedida;
+
     @Column
     private String codigoBarras;
 

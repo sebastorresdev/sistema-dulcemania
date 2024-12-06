@@ -23,8 +23,7 @@ public class ProductoController {
 
     @Autowired
     private ProductoService productoService;
-
-    private static final String UPLOAD_DIR = "D:/Proyectos/sistema-ventas-almacen-dulcemania/src/dulcemaria/src/main/resources/static/uploads/productos/";
+    private static final String UPLOAD_DIR = "D:/repos/sistema-ventas-almacen-dulcemania/src/dulcemaria/src/main/resources/static/uploads/productos/";
 
     @PostMapping("/uploadImage")
     public ResponseEntity<Result<String>> uploadProductImage(@RequestParam("file") MultipartFile file) {
@@ -36,7 +35,8 @@ public class ProductoController {
         try {
             String originalFileName = file.getOriginalFilename();
             String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
-            String uniqueFileName = UUID.randomUUID().toString() + extension;
+            String uniqueFileName = UUID.randomUUID().toString() + extension
+                    ;
 
             Path path = Paths.get(UPLOAD_DIR + uniqueFileName);
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);

@@ -4,9 +4,11 @@ import com.api.dulcemaria.common.productos.*;
 import com.api.dulcemaria.models.Familia;
 import com.api.dulcemaria.models.Marca;
 import com.api.dulcemaria.models.Producto;
+import com.api.dulcemaria.models.UnidadMedida;
 import com.api.dulcemaria.repositories.IFamiliaRepository;
 import com.api.dulcemaria.repositories.IMarcaRepository;
 import com.api.dulcemaria.repositories.IProductosRepository;
+import com.api.dulcemaria.repositories.IUnidadMedidaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,9 @@ public class ProductoService {
     private IProductoMapping productoMapping;
 
     @Autowired
+    private IUnidadMedidaRepository unidadMedidaRepository;
+
+    @Autowired
     private IMarcaRepository _marcaRepository;
 
     public GetProductoResponse guardarProducto(CreateProductoRequest productoRequest) {
@@ -37,8 +42,10 @@ public class ProductoService {
         Marca marca = _marcaRepository.findById(productoRequest.idMarca())
                 .orElseThrow(() -> new RuntimeException("Marca no encontrada con ID: " + productoRequest.idMarca()));
 
+        UnidadMedida unidadMedida = unidadMedidaRepository.findById(productoRequest.idUnidadMedida())
+                .orElseThrow(() -> new RuntimeException("Unidad medida no encontrada con ID: " + productoRequest.idUnidadMedida()));
 
-        Producto productoCreado = productosRepository.save(productoMapping.ToProducto(productoRequest, familia, marca));
+        Producto productoCreado = productosRepository.save(productoMapping.ToProducto(productoRequest, familia, marca, unidadMedida));
         return productoMapping.ToProductoResponse(productoCreado);
     }
 
