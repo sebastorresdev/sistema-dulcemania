@@ -12,46 +12,46 @@ import java.util.Set;
 @Entity
 @Table(name="pedidos")
 public class Pedido {
+	// Variables
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Column
 	private Timestamp fecha;
-	
 	@ManyToOne
 	@JoinColumn(name = "id_estado", nullable = true)
 	private EstadoDocumento documento;
-	
+	@Column
 	private BigDecimal total;
-	
 	@ManyToOne
 	@JoinColumn(name = "id_direccion_cliente", nullable = true)
 	private DireccionCliente cliente;
-	
 	@ManyToOne
 	@JoinColumn(name = "id_medio_pago", nullable = true)
 	private MedioPago medioPago;
-	
+	@Column
 	private String observacion;
-
-
-
+	@ManyToOne
+	@JoinColumn(name = "id_usuario", nullable = false)
+	private Usuario usuario;
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<DetallePedido> detallePedidos =new ArrayList<>();
-
+	@Column
 	private boolean esActivo = true;
 
+
+	// Constructos
 	public Pedido() {
 		super();
 	}
 
-	public Pedido(Timestamp fecha, EstadoDocumento documento, BigDecimal total, DireccionCliente cliente,
-				  MedioPago medioPago, String observacion) {
-		this.fecha = fecha;
-		this.documento = documento;
-		this.total = total;
-		this.cliente = cliente;
-		this.medioPago = medioPago;
-		this.observacion = observacion;
+	// Getters and Setters
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public List<DetallePedido> getDetallePedidos() {

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.api.dulcemaria.common.pedidos.IPedidoMapping;
 import com.api.dulcemaria.contracts.pedidos.CreatePedidoRequest;
+import com.api.dulcemaria.contracts.pedidos.GetPedidoResponse;
 import com.api.dulcemaria.contracts.pedidos.UpdatePedidoRequest;
 import com.api.dulcemaria.models.*;
 import com.api.dulcemaria.repositories.*;
@@ -23,27 +24,17 @@ public class PedidoService {
 	@Autowired
 	IPedidoMapping _mapping;
 
-	public List<Pedido> listarPedido(){
-		return (List<Pedido>)_pedidoRepository.findAll();
+	public List<GetPedidoResponse> listarPedido(){
+
+		List<Pedido> pedidos = (List<Pedido>)_pedidoRepository.findAll();
+
+		return pedidos.stream().map(p -> _mapping.convertToGetPedidoResponse(p)).toList();
 	}
 	
 	@Transactional
 	public Pedido guardarPedido(CreatePedidoRequest pedidoRequest) {
 
 		Pedido pedido = _mapping.convertToPedido(pedidoRequest);
-
-		List<DetallePedido> detallePedidos = new ArrayList<>();
-
-		for (var detallePedidoRequest : pedidoRequest.detallePedidos())
-		{
-			var detallePedido = _mapping.convertToDetallePedido(detallePedidoRequest);
-
-			detallePedido.setPedido(pedido);
-
-			detallePedidos.add(detallePedido);
-		}
-
-		pedido.setDetallePedidos(detallePedidos);
 
 		return _pedidoRepository.save(pedido);
 	}

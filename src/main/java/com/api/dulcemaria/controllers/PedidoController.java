@@ -3,6 +3,7 @@ package com.api.dulcemaria.controllers;
 import java.util.List;
 
 import com.api.dulcemaria.contracts.pedidos.CreatePedidoRequest;
+import com.api.dulcemaria.contracts.pedidos.GetPedidoResponse;
 import com.api.dulcemaria.contracts.pedidos.UpdatePedidoRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class PedidoController {
 	PedidoService _pedidoService;
 	
 	@GetMapping
-	public ResponseEntity< List<Pedido>> listarPedido(){
+	public ResponseEntity< List<GetPedidoResponse>> listarPedido(){
 		return ResponseEntity.ok(_pedidoService.listarPedido());
 	}
 

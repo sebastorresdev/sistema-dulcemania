@@ -11,6 +11,7 @@ public record CreatePedidoRequest(
         int idDireccion,
         int idMedioPago,
         String observacion,
+        int idUsuario,
         List<CreateDetallePedidoRequest> detallePedidos
 ) {
 }
