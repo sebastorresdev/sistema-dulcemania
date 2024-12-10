@@ -1,94 +1,73 @@
 package com.api.dulcemaria.services;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import com.api.dulcemaria.common.pedidos.CreatePedidoRequest;
-import com.api.dulcemaria.common.pedidos.DetailsPedidos;
+import com.api.dulcemaria.common.pedidos.IPedidoMapping;
+import com.api.dulcemaria.contracts.pedidos.CreatePedidoRequest;
+import com.api.dulcemaria.contracts.pedidos.UpdatePedidoRequest;
 import com.api.dulcemaria.models.*;
 import com.api.dulcemaria.repositories.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
 public class PedidoService {
+
 	@Autowired 
-	IPedidoRepository iped;
+	IPedidoRepository _pedidoRepository;
 
 	@Autowired
-	IDetallePedidoRepository _detallePedidoRepository;
+	IPedidoMapping _mapping;
 
-	@Autowired
-	IDireccionClienteRepository _direccionClienteRespository;
-
-	@Autowired
-	IMedioPagoRepository _medioPagoRepository;
-
-	@Autowired
-	IEstadoDocumentoRepository _estadoDocumentoRepository;
-
-	@Autowired
-	IProductosRepository _productoRepository;
-
-	public List<Pedido> listarpedido(){
-		return (List<Pedido>)iped.findAll();
+	public List<Pedido> listarPedido(){
+		return (List<Pedido>)_pedidoRepository.findAll();
 	}
 	
-	
-	public Pedido guardarpedido(CreatePedidoRequest p) {
+	@Transactional
+	public Pedido guardarPedido(CreatePedidoRequest pedidoRequest) {
 
-		DireccionCliente direccionCliente = _direccionClienteRespository.findById(p.idDireccion())
-				.orElseThrow(() -> new RuntimeException("Direccion no encontrada con ID: " + p.idDireccion()));
+		Pedido pedido = _mapping.convertToPedido(pedidoRequest);
 
-		MedioPago medioPago = _medioPagoRepository.findById(p.idMedioPago())
-				.orElseThrow(() -> new RuntimeException("Medio pago no encontrada con ID: " + p.idMedioPago()));
+		List<DetallePedido> detallePedidos = new ArrayList<>();
 
-		EstadoDocumento estadoDocumento = _estadoDocumentoRepository.findById(p.idDocumento())
-				.orElseThrow(() -> new RuntimeException("Documento no encontrada con ID: " + p.idDocumento()));
-
-		Pedido pedido = new Pedido();
-		pedido.setCliente(direccionCliente);
-		pedido.setDocumento(estadoDocumento);
-		pedido.setFecha(p.fecha());
-		pedido.setTotal(p.total());
-		pedido.setObservacion(p.observacion());
-		pedido.setMedioPago(medioPago);
-
-		return iped.save(pedido);
-
-	}
-
-	public Pedido guardarPedidoYDetalles(CreatePedidoRequest p) {
-		Pedido pedido = this.guardarpedido(p);
-		if (pedido == null ) return null;
-		List<DetallePedido> detallesPedidos = new ArrayList<>();
-
-		for (DetailsPedidos dp : p.detailsPedidos()) {
-			DetallePedido detallePedido = new DetallePedido();
+		for (var detallePedidoRequest : pedidoRequest.detallePedidos())
+		{
+			var detallePedido = _mapping.convertToDetallePedido(detallePedidoRequest);
 
 			detallePedido.setPedido(pedido);
-			detallePedido.setCantidad(dp.cantidad());
-			detallePedido.setDescuento(dp.descuento());
 
-			Producto producto = _productoRepository.findById(dp.idProducto())
-					.orElseThrow(() -> new RuntimeException("Producto no encontrada con ID: " + dp.idProducto()));
-
-			detallePedido.setProducto(producto);
-			detallePedido.setPrecioUnitario(dp.precioUnitario());
-
-			BigDecimal subTotal = dp.precioUnitario().multiply(new BigDecimal(dp.cantidad())).subtract(dp.descuento());
-
-			detallePedido.setSubtotal(subTotal);
-			detallePedido.setFechaRegistro(pedido.getFecha());
-
-			detallesPedidos.add(detallePedido);
-
+			detallePedidos.add(detallePedido);
 		}
-		_detallePedidoRepository.saveAll(detallesPedidos);
-		return pedido;
+
+		pedido.setDetallePedidos(detallePedidos);
+
+		return _pedidoRepository.save(pedido);
 	}
 
+	@Transactional
+	public Pedido editarPedido(UpdatePedidoRequest updatePedidoRequest) {
+
+		Pedido nuevoPedido = _mapping.convertToPedido(updatePedidoRequest);
+
+		Pedido pedidoExistente = _pedidoRepository.findById(nuevoPedido.getId())
+				.orElseThrow(() -> new EntityNotFoundException("Pedido no encontrado con ID: " + nuevoPedido.getId()));
+
+		pedidoExistente.setObservacion(nuevoPedido.getObservacion());
+		pedidoExistente.setCliente(nuevoPedido.getCliente());
+		pedidoExistente.setDocumento(nuevoPedido.getDocumento());
+		pedidoExistente.setMedioPago(nuevoPedido.getMedioPago());
+		pedidoExistente.setTotal(nuevoPedido.getTotal());
+
+		pedidoExistente.getDetallePedidos().clear();
+
+		for (DetallePedido detalle : nuevoPedido.getDetallePedidos()) {
+			detalle.setPedido(nuevoPedido);
+			pedidoExistente.getDetallePedidos().add(detalle);
+		}
+		return _pedidoRepository.save(pedidoExistente);
+	}
 }

@@ -1,6 +1,6 @@
 package com.api.dulcemaria.services;
 
-import com.api.dulcemaria.common.marcas.GetMarcaResponse;
+import com.api.dulcemaria.contracts.marcas.GetMarcaResponse;
 import com.api.dulcemaria.common.marcas.IMarcaMapping;
 import com.api.dulcemaria.models.Marca;
 import com.api.dulcemaria.repositories.IMarcaRepository;

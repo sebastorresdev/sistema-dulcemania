@@ -2,9 +2,9 @@ package com.api.dulcemaria.controllers;
 
 import com.api.dulcemaria.common.helpers.Error;
 import com.api.dulcemaria.common.helpers.Result;
-import com.api.dulcemaria.common.productos.CreateProductoRequest;
-import com.api.dulcemaria.common.productos.GetProductoResponse;
-import com.api.dulcemaria.common.productos.UpdateProductoRequest;
+import com.api.dulcemaria.contracts.productos.CreateProductoRequest;
+import com.api.dulcemaria.contracts.productos.GetProductoResponse;
+import com.api.dulcemaria.contracts.productos.UpdateProductoRequest;
 import com.api.dulcemaria.services.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

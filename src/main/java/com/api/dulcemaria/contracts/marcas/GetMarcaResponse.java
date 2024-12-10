@@ -1,4 +1,4 @@
-package com.api.dulcemaria.common.marcas;
+package com.api.dulcemaria.contracts.marcas;
 
 public record GetMarcaResponse(
         int id,

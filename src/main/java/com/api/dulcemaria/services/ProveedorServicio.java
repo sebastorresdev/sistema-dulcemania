@@ -1,7 +1,11 @@
 package com.api.dulcemaria.services;
 
+import com.api.dulcemaria.common.proveedores.IProveedorMapping;
+import com.api.dulcemaria.contracts.proveedores.CreateProveedorRequest;
 import com.api.dulcemaria.models.Proveedor;
+import com.api.dulcemaria.models.Ubigeo;
 import com.api.dulcemaria.repositories.IProveedorRepository;
+import com.api.dulcemaria.repositories.IUbigeoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,29 +15,30 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProveedorServicio {
+
 	@Autowired 
-	IProveedorRepository ipro;
-	
-	public List<Proveedor> listarproveedores(){
-		List<Proveedor> proveedores = ipro.findAll();
+	IProveedorRepository _proveedorRepository;
+	@Autowired
+	IProveedorMapping _mapping;
+
+	public List<Proveedor> listarProveedores(){
+		List<Proveedor> proveedores = _proveedorRepository.findAll();
 		return proveedores.stream().filter(p -> p.getEsActivo()).collect(Collectors.toList());
 	}
 	
-	public Proveedor guardarproveedor(Proveedor p) {
-		Optional<Proveedor> reg=ipro.findById(p.getId());
-		if (!reg.isPresent()) 
-			return ipro.save(p);
-		else
-			return null;
-		
+	public Proveedor guardarProveedor(CreateProveedorRequest proveedorRequest) {
+
+		Proveedor proveedor = _mapping.convertToProveedor(proveedorRequest);
+
+		return _proveedorRepository.save(proveedor);
 	}
 	
 	public boolean eliminarproveedor(Integer id) {
-		Optional<Proveedor> reg=ipro.findById(id);
+		Optional<Proveedor> reg=_proveedorRepository.findById(id);
 		if (reg.isPresent()) {
 			reg.ifPresent(p -> p.setEsActivo(false));
-			ipro.save(reg.get());
-			//ipro.deleteById(id);
+			_proveedorRepository.save(reg.get());
+			//_proveedorRepository.deleteById(id);
 			return true;
 		}
 		else
@@ -41,7 +46,7 @@ public class ProveedorServicio {
 	}
 	
 	public Proveedor actualizarProveedor(Proveedor p) {
-	    Optional<Proveedor> reg = ipro.findById(p.getId());
+	    Optional<Proveedor> reg = _proveedorRepository.findById(p.getId());
 	    if (reg.isPresent()) {
 	        Proveedor proveedorExistente = reg.get();
 	        
@@ -56,14 +61,14 @@ public class ProveedorServicio {
 	        proveedorExistente.setEsActivo(p.getEsActivo());
 	        proveedorExistente.setUbigeo(p.getUbigeo());
 	        
-	        return ipro.save(proveedorExistente);
+	        return _proveedorRepository.save(proveedorExistente);
 	    } else {
 	        return null;
 	    }  
 	}
 	
 	public Optional<Proveedor> buscarruc(String ruc){
-		return ipro.findByruc(ruc);
+		return _proveedorRepository.findByruc(ruc);
 	}
 	
 	

@@ -1,9 +1,7 @@
 package com.api.dulcemaria.controllers;
 
-import com.api.dulcemaria.common.familias.GetFamiliaResponse;
-import com.api.dulcemaria.common.productos.GetProductoResponse;
+import com.api.dulcemaria.contracts.familias.GetFamiliaResponse;
 import com.api.dulcemaria.services.FamiliaService;
-import com.api.dulcemaria.services.MarcaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

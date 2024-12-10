@@ -2,6 +2,9 @@ package com.api.dulcemaria.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table (name = "clientes")
 public class Cliente {
@@ -9,7 +12,6 @@ public class Cliente {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
 	@Column
 	private String tipoDocumento;
 	@Column
@@ -26,6 +28,11 @@ public class Cliente {
 	private String correo;
 	@Column 
 	private boolean esActivo = true;
+	@Column
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<DireccionCliente> direccionClientes = new ArrayList<>();
+
+
 	public int getId() {
 		return id;
 	}
@@ -79,6 +86,13 @@ public class Cliente {
 	}
 	public void setEsActivo(boolean esActivo) {
 		this.esActivo = esActivo;
+	}
+	public List<DireccionCliente> getDireccionClientes() {
+		return direccionClientes;
+	}
+
+	public void setDireccionClientes(List<DireccionCliente> direccionClientes) {
+		this.direccionClientes = direccionClientes;
 	}
 	
 

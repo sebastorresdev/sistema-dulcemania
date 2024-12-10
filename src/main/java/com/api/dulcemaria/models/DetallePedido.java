@@ -2,7 +2,9 @@ package com.api.dulcemaria.models;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,9 +13,11 @@ public class DetallePedido {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	@ManyToOne
-	@JoinColumn(name = "id_pedido", nullable = true)
+
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_pedido", nullable = false)
+	@JsonIgnore
 	private Pedido pedido;
 	
 	private int cantidad;
@@ -21,7 +25,7 @@ public class DetallePedido {
 	private BigDecimal descuento;
 	private BigDecimal subtotal;
 	private boolean esActivo = true;
-	private Timestamp fechaRegistro;
+	private Timestamp fechaRegistro = Timestamp.valueOf(LocalDateTime.now());
 	
 	@ManyToOne
 	@JoinColumn(name = "id_producto", nullable = true)
@@ -31,17 +35,18 @@ public class DetallePedido {
 		super();
 	}
 
-	public DetallePedido(int id, Pedido pedido, int cantidad, BigDecimal precioUnitario, BigDecimal descuento, BigDecimal subtotal,
-			boolean esActivo, Timestamp fechaRegistro, Producto producto) {
+	public DetallePedido(Pedido pedido,
+						int cantidad,
+						BigDecimal precioUnitario,
+						BigDecimal descuento,
+						BigDecimal subtotal,
+						Producto producto) {
 		super();
-		this.id = id;
 		this.pedido = pedido;
 		this.cantidad = cantidad;
 		this.precioUnitario = precioUnitario;
 		this.descuento = descuento;
 		this.subtotal = subtotal;
-		this.esActivo = esActivo;
-		this.fechaRegistro = fechaRegistro;
 		this.producto = producto;
 	}
 

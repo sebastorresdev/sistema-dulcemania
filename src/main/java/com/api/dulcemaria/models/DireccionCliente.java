@@ -1,6 +1,7 @@
 package com.api.dulcemaria.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,6 +15,7 @@ public class DireccionCliente {
 	
 	@ManyToOne
 	@JoinColumn(name = "id_cliente", nullable = true)
+	@JsonIgnore
 	private Cliente cliente;
 	
 	@ManyToOne

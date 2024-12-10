@@ -1,4 +1,4 @@
-package com.api.dulcemaria.common.familias;
+package com.api.dulcemaria.contracts.familias;
 
 public record GetFamiliaResponse(
         int id,

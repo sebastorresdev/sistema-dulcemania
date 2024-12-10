@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="pedidos")
@@ -29,20 +33,33 @@ public class Pedido {
 	
 	private String observacion;
 
+
+
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<DetallePedido> detallePedidos =new ArrayList<>();
+
+	private boolean esActivo = true;
+
 	public Pedido() {
 		super();
 	}
 
-	public Pedido(int id, Timestamp fecha, EstadoDocumento documento, BigDecimal total, DireccionCliente cliente,
+	public Pedido(Timestamp fecha, EstadoDocumento documento, BigDecimal total, DireccionCliente cliente,
 				  MedioPago medioPago, String observacion) {
-		super();
-		this.id = id;
 		this.fecha = fecha;
 		this.documento = documento;
 		this.total = total;
 		this.cliente = cliente;
 		this.medioPago = medioPago;
 		this.observacion = observacion;
+	}
+
+	public List<DetallePedido> getDetallePedidos() {
+		return detallePedidos;
+	}
+
+	public void setDetallePedidos(List<DetallePedido> detallePedidos) {
+		this.detallePedidos = detallePedidos;
 	}
 
 	public int getId() {

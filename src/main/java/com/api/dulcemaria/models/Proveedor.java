@@ -16,7 +16,6 @@ public class Proveedor {
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)
 	 private int id;
-	 
 	 @Column
 	 private String contacto;
 	 @Column
@@ -27,16 +26,12 @@ public class Proveedor {
 	 private String telefono1;
 	 @Column
 	 private String telefono2;
-	 
 	 @Column
 	 private String direccion;
-	 
 	 @Column
 	 private String correo;
-	 
 	 @Column
 	 private String observacionDireccion;
-	 
 	 @Column
 	 private boolean esActivo = true;
 	 

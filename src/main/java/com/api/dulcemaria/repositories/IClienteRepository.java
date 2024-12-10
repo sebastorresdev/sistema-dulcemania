@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface IClienteRepository extends JpaRepository<Cliente, Integer>  {
-	Optional<Cliente> findBynumeroDocumento(String numeroDocumento);
+	Optional<Cliente> findByNumeroDocumento(String numeroDocumento);
 
 }

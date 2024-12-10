@@ -1,16 +1,15 @@
-package com.api.dulcemaria.common.pedidos;
+package com.api.dulcemaria.contracts.pedidos;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.List;
 
-public record CreatePedidoRequest(
-        Timestamp fecha,
+public record UpdatePedidoRequest(
+        int id,
         int idDocumento,
         BigDecimal total,
         int idDireccion,
         int idMedioPago,
         String observacion,
-        List<DetailsPedidos> detailsPedidos
+        List<CreateDetallePedidoRequest> detallePedidos
 ) {
 }

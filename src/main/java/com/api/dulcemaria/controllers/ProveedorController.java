@@ -1,14 +1,15 @@
 package com.api.dulcemaria.controllers;
 
+import com.api.dulcemaria.contracts.proveedores.CreateProveedorRequest;
 import com.api.dulcemaria.models.Proveedor;
 import com.api.dulcemaria.services.ProveedorServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping ("/api/proveedores")
@@ -17,16 +18,18 @@ public class ProveedorController {
 	ProveedorServicio proser;
 	
 	@GetMapping()
-	public List<Proveedor> listarproveedores(){
-		return proser.listarproveedores();
+	public List<Proveedor> listarProveedores(){
+		return proser.listarProveedores();
 	}
 	
-	@PostMapping()
-	public Proveedor guardarproveedor(@RequestBody Proveedor p) {
-		return proser.guardarproveedor(p);
+	@PostMapping
+	public ResponseEntity<Proveedor> guardarProveedorYDetalles(@RequestBody CreateProveedorRequest request) {
+		return new ResponseEntity<>(proser.guardarProveedor(request), HttpStatus.OK);
+	}
+
 	}
 	
-	@DeleteMapping("/{id}")
+	/*@DeleteMapping("/{id}")
 	public String eliminarproveedor (@PathVariable Integer id) {
 		boolean res= proser.eliminarproveedor(id);
 		if (res)
@@ -56,7 +59,7 @@ public class ProveedorController {
 	@GetMapping("/{ruc}")
 	public Optional<Proveedor> buscarruc(@PathVariable String ruc){
 		return proser.buscarruc(ruc);
-	}
+	}*/
 	
 		
-}
+

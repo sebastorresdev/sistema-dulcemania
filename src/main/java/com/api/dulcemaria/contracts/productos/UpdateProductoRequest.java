@@ -1,4 +1,4 @@
-package com.api.dulcemaria.common.productos;
+package com.api.dulcemaria.contracts.productos;
 
 import java.math.BigDecimal;
 import java.util.Optional;

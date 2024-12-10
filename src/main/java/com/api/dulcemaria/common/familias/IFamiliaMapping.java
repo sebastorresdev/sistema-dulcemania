@@ -1,5 +1,6 @@
 package com.api.dulcemaria.common.familias;
 
+import com.api.dulcemaria.contracts.familias.GetFamiliaResponse;
 import com.api.dulcemaria.models.Familia;
 
 public interface IFamiliaMapping {

@@ -1,8 +1,8 @@
-package com.api.dulcemaria.common.pedidos;
+package com.api.dulcemaria.contracts.pedidos;
 
 import java.math.BigDecimal;
 
-public record DetailsPedidos(
+public record CreateDetallePedidoRequest(
         int idProducto,
         int cantidad,
         BigDecimal precioUnitario,

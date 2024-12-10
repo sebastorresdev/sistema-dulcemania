@@ -1,33 +1,34 @@
 package com.api.dulcemaria.controllers;
 
+import com.api.dulcemaria.contracts.clientes.CreateClienteRequest;
 import com.api.dulcemaria.models.Cliente;
 import com.api.dulcemaria.services.ClienteServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping ("/api/clientes")
 public class ClienteController {
 	
 	@Autowired
-	ClienteServicio cliser;
+	ClienteServicio _clienteService;
 	
 	@GetMapping()
 	public List<Cliente> listarclientes(){
-		return cliser.listarclientes();
+		return _clienteService.listarClientes();
+	}
+
+	@PostMapping
+	public ResponseEntity<Cliente> guardarCliente(@RequestBody CreateClienteRequest request) {
+		return new ResponseEntity<>(_clienteService.guardarCliente(request), HttpStatus.OK);
 	}
 	
-	@PostMapping()
-	public Cliente guardarclientes(@RequestBody Cliente c) {
-		return cliser.guardarclientes(c);
-	}
-	
-	@DeleteMapping("/{id}")
+	/*@DeleteMapping("/{id}")
 	public String eliminarcliente (@PathVariable Integer id) {
 		boolean res= cliser.eliminarcliente(id);
 		if (res)
@@ -52,9 +53,9 @@ public class ClienteController {
 	        )
 	    );
 	}
-	
+
 	@GetMapping("/{numeroDocumento}")
 	public Optional<Cliente> buscarnumeroDocumento(@PathVariable String numeroDocumento){
 		return cliser.buscarnumeroDocumento(numeroDocumento);
-	}
+	}*/
 }
