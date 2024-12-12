@@ -1,6 +1,6 @@
 package com.api.dulcemaria.services;
 
-import com.api.dulcemaria.common.productos.*;
+import com.api.dulcemaria.helpers.productos.*;
 import com.api.dulcemaria.contracts.productos.CreateProductoRequest;
 import com.api.dulcemaria.contracts.productos.GetProductoResponse;
 import com.api.dulcemaria.contracts.productos.UpdateProductoRequest;

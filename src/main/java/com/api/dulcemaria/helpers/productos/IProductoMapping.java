@@ -1,4 +1,4 @@
-package com.api.dulcemaria.common.productos;
+package com.api.dulcemaria.helpers.productos;
 
 import com.api.dulcemaria.contracts.productos.CreateProductoRequest;
 import com.api.dulcemaria.contracts.productos.GetProductoResponse;

@@ -1,11 +1,9 @@
 package com.api.dulcemaria.services;
 
-import com.api.dulcemaria.common.proveedores.IProveedorMapping;
+import com.api.dulcemaria.helpers.proveedores.IProveedorMapping;
 import com.api.dulcemaria.contracts.proveedores.CreateProveedorRequest;
 import com.api.dulcemaria.models.Proveedor;
-import com.api.dulcemaria.models.Ubigeo;
 import com.api.dulcemaria.repositories.IProveedorRepository;
-import com.api.dulcemaria.repositories.IUbigeoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

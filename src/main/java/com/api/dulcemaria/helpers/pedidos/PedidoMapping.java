@@ -1,4 +1,4 @@
-package com.api.dulcemaria.common.pedidos;
+package com.api.dulcemaria.helpers.pedidos;
 
 import com.api.dulcemaria.contracts.pedidos.*;
 import com.api.dulcemaria.models.*;
@@ -117,6 +117,9 @@ public class PedidoMapping implements IPedidoMapping{
                 pedido.getCliente().getUbigeo().getDistrito(),
                 pedido.getCliente().getDireccion(),
                 pedido.getObservacion(),
+                pedido.getTipoDocumento(),
+                pedido.getCliente().getCliente().getNumeroDocumento(),
+                pedido.getMedioPago().getDescripcion(),
                 getDetallePedidoResponses
         );
     }

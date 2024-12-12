@@ -14,6 +14,9 @@ public record GetPedidoResponse(
         String distrito,
         String direccion,
         String observacion,
+        String tipoDocumento,
+        String ruc,
+        String medioPago,
         List<GetDetallePedidoResponse> detallePedidos
 ) {
 }

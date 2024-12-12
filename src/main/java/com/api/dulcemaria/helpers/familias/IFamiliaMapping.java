@@ -1,4 +1,4 @@
-package com.api.dulcemaria.common.familias;
+package com.api.dulcemaria.helpers.familias;
 
 import com.api.dulcemaria.contracts.familias.GetFamiliaResponse;
 import com.api.dulcemaria.models.Familia;

@@ -1,4 +1,4 @@
-package com.api.dulcemaria.common.proveedores;
+package com.api.dulcemaria.helpers.proveedores;
 
 import com.api.dulcemaria.contracts.proveedores.CreateProveedorRequest;
 import com.api.dulcemaria.models.Proveedor;

@@ -1,9 +1,8 @@
 package com.api.dulcemaria.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.api.dulcemaria.common.pedidos.IPedidoMapping;
+import com.api.dulcemaria.helpers.pedidos.IPedidoMapping;
 import com.api.dulcemaria.contracts.pedidos.CreatePedidoRequest;
 import com.api.dulcemaria.contracts.pedidos.GetPedidoResponse;
 import com.api.dulcemaria.contracts.pedidos.UpdatePedidoRequest;

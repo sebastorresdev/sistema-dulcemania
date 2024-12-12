@@ -1,4 +1,4 @@
-package com.api.dulcemaria.common.pedidos;
+package com.api.dulcemaria.helpers.pedidos;
 
 import com.api.dulcemaria.contracts.pedidos.*;
 import com.api.dulcemaria.models.DetallePedido;

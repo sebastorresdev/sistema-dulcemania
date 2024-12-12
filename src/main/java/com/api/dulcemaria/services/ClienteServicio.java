@@ -1,20 +1,15 @@
 package com.api.dulcemaria.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.api.dulcemaria.common.clientes.IClienteMapping;
+import com.api.dulcemaria.helpers.clientes.IClienteMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.dulcemaria.contracts.clientes.CreateClienteRequest;
-import com.api.dulcemaria.contracts.clientes.DireccionClienteRequest;
 import com.api.dulcemaria.models.Cliente;
-import com.api.dulcemaria.models.DireccionCliente;
-import com.api.dulcemaria.models.Ubigeo;
 import com.api.dulcemaria.repositories.IClienteRepository;
 import com.api.dulcemaria.repositories.IDireccionClienteRepository;
-import com.api.dulcemaria.repositories.IUbigeoRepository;
 
 @Service
 public class ClienteServicio {

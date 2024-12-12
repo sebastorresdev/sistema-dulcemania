@@ -1,7 +1,7 @@
 package com.api.dulcemaria.services;
 
 import com.api.dulcemaria.contracts.familias.GetFamiliaResponse;
-import com.api.dulcemaria.common.familias.IFamiliaMapping;
+import com.api.dulcemaria.helpers.familias.IFamiliaMapping;
 import com.api.dulcemaria.models.Familia;
 import com.api.dulcemaria.repositories.IFamiliaRepository;
 import org.springframework.beans.factory.annotation.Autowired;

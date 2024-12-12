@@ -1,4 +1,4 @@
-package com.api.dulcemaria.common.clientes;
+package com.api.dulcemaria.helpers.clientes;
 
 import com.api.dulcemaria.contracts.clientes.CreateClienteRequest;
 import com.api.dulcemaria.contracts.clientes.DireccionClienteRequest;

@@ -40,6 +40,10 @@ public class Pedido {
 	private boolean esActivo = true;
 
 
+	@Column
+	private String tipoDocumento;
+
+
 	// Constructos
 	public Pedido() {
 		super();
@@ -117,7 +121,14 @@ public class Pedido {
 	public void setObservacion(String observacion) {
 		this.observacion = observacion;
 	}
-	
-	
+
+
+	public String getTipoDocumento() {
+		return tipoDocumento;
+	}
+
+	public void setTipoDocumento(String tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
 
 }

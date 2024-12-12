@@ -1,7 +1,5 @@
 package com.api.dulcemaria.controllers;
 
-import com.api.dulcemaria.common.helpers.Error;
-import com.api.dulcemaria.common.helpers.Result;
 import com.api.dulcemaria.contracts.productos.CreateProductoRequest;
 import com.api.dulcemaria.contracts.productos.GetProductoResponse;
 import com.api.dulcemaria.contracts.productos.UpdateProductoRequest;
@@ -26,10 +24,9 @@ public class ProductoController {
     private static final String UPLOAD_DIR = "D:/repos/sistema-ventas-almacen-dulcemania/src/dulcemaria/src/main/resources/static/uploads/productos/";
 
     @PostMapping("/uploadImage")
-    public ResponseEntity<Result<String>> uploadProductImage(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadProductImage(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
-            Error error = new Error("validacion","El archivo enviado no cumple el formato establecido");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Result<>(error));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al intentar cargar una imagen");
         }
 
         try {
@@ -41,39 +38,37 @@ public class ProductoController {
             Path path = Paths.get(UPLOAD_DIR + uniqueFileName);
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-            return ResponseEntity.ok(new Result<>(uniqueFileName));
+            return ResponseEntity.ok(uniqueFileName);
         } catch (IOException e) {
-            Error internalError = new Error("Unexpected","Error al procesar el archivo.");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Result<>(internalError));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error no controlado");
         }
     }
 
     @PostMapping
-    public ResponseEntity<Result<GetProductoResponse>> createProducto(@RequestBody CreateProductoRequest request) {
+    public ResponseEntity<GetProductoResponse> createProducto(@RequestBody CreateProductoRequest request) {
         GetProductoResponse savedProducto = productoService.guardarProducto(request);
-        return new ResponseEntity<>(new Result<>(savedProducto), HttpStatus.CREATED);
+        return new ResponseEntity<>(savedProducto, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<Result<List<GetProductoResponse>>> getProductos() {
+    public ResponseEntity<List<GetProductoResponse>> getProductos() {
         List<GetProductoResponse> productosResponses = productoService.getProductos();
-        return new ResponseEntity<>(new Result<>(productosResponses), HttpStatus.OK);
+        return new ResponseEntity<>(productosResponses, HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<Result<GetProductoResponse>> updateProducto(@RequestBody UpdateProductoRequest request) {
+    public ResponseEntity<GetProductoResponse> updateProducto(@RequestBody UpdateProductoRequest request) {
         try {
             GetProductoResponse response = productoService.updateProductos(request);
-            return new ResponseEntity<>(new Result<>(response), HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            Error internalError = new Error("Unexpected","Error al actualizar el archivo.");
-            return new ResponseEntity<>(new Result<>(internalError), HttpStatus.BAD_REQUEST);
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Result<Boolean>> deleteProducto(@PathVariable int id) {
+    public ResponseEntity<Boolean> deleteProducto(@PathVariable int id) {
         boolean response = productoService.deleteProducto(id);
-        return new ResponseEntity<>(new Result<>(response), HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
