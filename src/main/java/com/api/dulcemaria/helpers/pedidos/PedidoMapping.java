@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,10 +41,9 @@ public class PedidoMapping implements IPedidoMapping{
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrada con ID: " + request.idUsuario()));
 
         Pedido pedido = new Pedido();
-        pedido.setFecha(request.fecha());
+        pedido.setFecha(Timestamp.from(Instant.now()));
         pedido.setUsuario(usuario);
         pedido.setDocumento(estadoDocumento);
-        pedido.setTotal(request.total());
         pedido.setCliente(direccionCliente);
         pedido.setMedioPago(medioPago);
         pedido.setTipoDocumento(request.tipoDocumento());
@@ -50,6 +51,13 @@ public class PedidoMapping implements IPedidoMapping{
 
         List<DetallePedido> detallePedido = request.detallePedidos().stream().map(dp -> convertToDetallePedido(dp, pedido)).toList();
 
+        BigDecimal total = detallePedido.stream()
+                .map(detalle -> detalle.getPrecioUnitario()
+                        .multiply(BigDecimal.valueOf(detalle.getCantidad())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+
+        pedido.setTotal(total);
         pedido.setDetallePedidos(detallePedido);
 
         return pedido;
@@ -60,15 +68,14 @@ public class PedidoMapping implements IPedidoMapping{
         Producto producto = _productoRepository.findById(request.idProducto())
                 .orElseThrow(() -> new RuntimeException(("Producto no encontrado con ID:" + request.idProducto())));
 
-        BigDecimal subTotal = request.precioUnitario().multiply(new BigDecimal(request.cantidad())).subtract(request.descuento());
+        BigDecimal subTotal = producto.getPrecioUnitario().multiply(new BigDecimal(request.cantidad()));
 
         DetallePedido detallePedido = new DetallePedido();
         detallePedido.setPedido(pedido);
         detallePedido.setCantidad(request.cantidad());
         detallePedido.setProducto(producto);
         detallePedido.setSubtotal(subTotal);
-        detallePedido.setDescuento(request.descuento());
-        detallePedido.setPrecioUnitario(request.precioUnitario());
+        detallePedido.setPrecioUnitario(producto.getPrecioUnitario());
 
         return detallePedido;
     }
@@ -86,7 +93,6 @@ public class PedidoMapping implements IPedidoMapping{
 
         Pedido pedido = new Pedido();
         pedido.setId(request.id());
-        pedido.setTotal(request.total());
         pedido.setDocumento(estadoDocumento);
         pedido.setCliente(direccionCliente);
         pedido.setMedioPago(medioPago);
@@ -95,6 +101,13 @@ public class PedidoMapping implements IPedidoMapping{
 
         List<DetallePedido> detallePedido = request.detallePedidos().stream().map(dp -> convertToDetallePedido(dp, pedido)).toList();
 
+        BigDecimal total = detallePedido.stream()
+                .map(detalle -> detalle.getPrecioUnitario()
+                        .multiply(BigDecimal.valueOf(detalle.getCantidad())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+
+        pedido.setTotal(total);
         pedido.setDetallePedidos(detallePedido);
 
         return pedido;
@@ -122,6 +135,7 @@ public class PedidoMapping implements IPedidoMapping{
                 pedido.getTipoDocumento(),
                 pedido.getCliente().getCliente().getNumeroDocumento(),
                 pedido.getMedioPago().getDescripcion(),
+                pedido.getNumeroDocumento(),
                 getDetallePedidoResponses
         );
     }

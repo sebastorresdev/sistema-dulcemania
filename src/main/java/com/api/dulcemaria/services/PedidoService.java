@@ -61,4 +61,8 @@ public class PedidoService {
 		}
 		return _mapping.convertToGetPedidoResponse(_pedidoRepository.save(pedidoExistente));
 	}
+
+	public void registrarVenta(String tipoDocumento) {
+	}
+
 }

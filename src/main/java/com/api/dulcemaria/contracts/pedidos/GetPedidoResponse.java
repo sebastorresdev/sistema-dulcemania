@@ -17,6 +17,7 @@ public record GetPedidoResponse(
         String tipoDocumento,
         String ruc,
         String medioPago,
+        String numeroDocumento,
         List<GetDetallePedidoResponse> detallePedidos
 ) {
 }

@@ -1,5 +1,6 @@
 package com.api.dulcemaria.services;
 
+import com.api.dulcemaria.contracts.pedidos.GetDetallePedidoResponse;
 import com.api.dulcemaria.helpers.productos.*;
 import com.api.dulcemaria.contracts.productos.CreateProductoRequest;
 import com.api.dulcemaria.contracts.productos.GetProductoResponse;
@@ -17,13 +18,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductoService {
 
     @Autowired
-    private IProductosRepository productosRepository;
+    private IProductosRepository _productosRepository;
 
     @Autowired
     private IFamiliaRepository familiaRepository;
@@ -48,12 +50,12 @@ public class ProductoService {
         UnidadMedida unidadMedida = unidadMedidaRepository.findById(productoRequest.idUnidadMedida())
                 .orElseThrow(() -> new RuntimeException("Unidad medida no encontrada con ID: " + productoRequest.idUnidadMedida()));
 
-        Producto productoCreado = productosRepository.save(productoMapping.ToProducto(productoRequest, familia, marca, unidadMedida));
+        Producto productoCreado = _productosRepository.save(productoMapping.ToProducto(productoRequest, familia, marca, unidadMedida));
         return productoMapping.ToProductoResponse(productoCreado);
     }
 
     public List<GetProductoResponse> getProductos() {
-        return productosRepository.findAll().stream()
+        return _productosRepository.findAll().stream()
                  .filter(Producto::getEsActivo)
                  .map(producto -> productoMapping.ToProductoResponse(producto))
                  .collect(Collectors.toList());
@@ -61,7 +63,7 @@ public class ProductoService {
 
     @Transactional
     public GetProductoResponse updateProductos(UpdateProductoRequest productoRequest) {
-        Producto producto = productosRepository.findById(productoRequest.id())
+        Producto producto = _productosRepository.findById(productoRequest.id())
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + productoRequest.id()));
 
 
@@ -87,10 +89,30 @@ public class ProductoService {
 
     @Transactional
     public boolean deleteProducto(int id) {
-        Producto producto = productosRepository.findById(id)
+        Producto producto = _productosRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
 
         producto.setEsActivo(false);
         return true;
     }
+
+    @Transactional
+    public boolean actualizarStock(List<GetDetallePedidoResponse> detallePedidos) {
+
+        for (GetDetallePedidoResponse detalle : detallePedidos) {
+            Producto producto = _productosRepository.findById(detalle.idProducto())
+                    .orElseThrow(() -> new RuntimeException("Marca no encontrada con ID: " + detalle.idProducto()));
+
+            int saldo = producto.getStock() - detalle.cantidad();
+
+            if (saldo < 0) {
+                new RuntimeException("No cuenta con stock suficiente: " + detalle.idProducto());
+            }
+
+            producto.setStock(saldo);
+        }
+        return true;
+    }
+
+
 }

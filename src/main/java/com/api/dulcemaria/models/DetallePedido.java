@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="detalle_pedidos")
+@Table(name="detalle_ventas")
 public class DetallePedido {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +22,9 @@ public class DetallePedido {
 	
 	private int cantidad;
 	private BigDecimal precioUnitario;
-	private BigDecimal descuento;
 	private BigDecimal subtotal;
 	private boolean esActivo = true;
+
 	private Timestamp fechaRegistro = Timestamp.valueOf(LocalDateTime.now());
 	
 	@ManyToOne
@@ -38,14 +38,12 @@ public class DetallePedido {
 	public DetallePedido(Pedido pedido,
 						int cantidad,
 						BigDecimal precioUnitario,
-						BigDecimal descuento,
 						BigDecimal subtotal,
 						Producto producto) {
 		super();
 		this.pedido = pedido;
 		this.cantidad = cantidad;
 		this.precioUnitario = precioUnitario;
-		this.descuento = descuento;
 		this.subtotal = subtotal;
 		this.producto = producto;
 	}
@@ -82,14 +80,6 @@ public class DetallePedido {
 		this.precioUnitario = precioUnitario;
 	}
 
-	public BigDecimal getDescuento() {
-		return descuento;
-	}
-
-	public void setDescuento(BigDecimal descuento) {
-		this.descuento = descuento;
-	}
-
 	public BigDecimal getSubtotal() {
 		return subtotal;
 	}
@@ -121,5 +111,6 @@ public class DetallePedido {
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 	}
-	
+
+
 }

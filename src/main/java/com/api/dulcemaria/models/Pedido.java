@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name="pedidos")
+@Table(name="ventas")
 public class Pedido {
 	// Variables
 	@Id
@@ -36,6 +36,8 @@ public class Pedido {
 	private Usuario usuario;
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<DetallePedido> detallePedidos =new ArrayList<>();
+	@Column
+	private String numeroDocumento;
 	@Column
 	private boolean esActivo = true;
 
@@ -129,6 +131,14 @@ public class Pedido {
 
 	public void setTipoDocumento(String tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
+	}
+
+	public String getNumeroDocumento() {
+		return numeroDocumento;
+	}
+
+	public void setNumeroDocumento(String numeroDocumento) {
+		this.numeroDocumento = numeroDocumento;
 	}
 
 }
