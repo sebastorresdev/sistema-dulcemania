@@ -10,6 +10,7 @@ public record UpdatePedidoRequest(
         int idDireccion,
         int idMedioPago,
         String observacion,
+        String tipoDocumento,
         List<CreateDetallePedidoRequest> detallePedidos
 ) {
 }

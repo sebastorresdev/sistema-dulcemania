@@ -26,12 +26,12 @@ public class PedidoController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Pedido> guardarPedido(@RequestBody CreatePedidoRequest request) {
+	public ResponseEntity<GetPedidoResponse> guardarPedido(@RequestBody CreatePedidoRequest request) {
 		return new ResponseEntity<>(_pedidoService.guardarPedido(request), HttpStatus.OK);
 	}
 
 	@PutMapping
-	public ResponseEntity<Pedido> editarPedido(@RequestBody UpdatePedidoRequest request) {
+	public ResponseEntity<GetPedidoResponse> editarPedido(@RequestBody UpdatePedidoRequest request) {
 		return new ResponseEntity<>(_pedidoService.editarPedido(request), HttpStatus.OK);
 	}
 }

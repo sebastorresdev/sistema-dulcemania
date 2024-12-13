@@ -31,15 +31,15 @@ public class PedidoService {
 	}
 	
 	@Transactional
-	public Pedido guardarPedido(CreatePedidoRequest pedidoRequest) {
+	public GetPedidoResponse guardarPedido(CreatePedidoRequest pedidoRequest) {
 
 		Pedido pedido = _mapping.convertToPedido(pedidoRequest);
 
-		return _pedidoRepository.save(pedido);
+		return _mapping.convertToGetPedidoResponse(_pedidoRepository.save(pedido));
 	}
 
 	@Transactional
-	public Pedido editarPedido(UpdatePedidoRequest updatePedidoRequest) {
+	public GetPedidoResponse editarPedido(UpdatePedidoRequest updatePedidoRequest) {
 
 		Pedido nuevoPedido = _mapping.convertToPedido(updatePedidoRequest);
 
@@ -51,6 +51,7 @@ public class PedidoService {
 		pedidoExistente.setDocumento(nuevoPedido.getDocumento());
 		pedidoExistente.setMedioPago(nuevoPedido.getMedioPago());
 		pedidoExistente.setTotal(nuevoPedido.getTotal());
+		pedidoExistente.setTipoDocumento(nuevoPedido.getTipoDocumento());
 
 		pedidoExistente.getDetallePedidos().clear();
 
@@ -58,6 +59,6 @@ public class PedidoService {
 			detalle.setPedido(nuevoPedido);
 			pedidoExistente.getDetallePedidos().add(detalle);
 		}
-		return _pedidoRepository.save(pedidoExistente);
+		return _mapping.convertToGetPedidoResponse(_pedidoRepository.save(pedidoExistente));
 	}
 }

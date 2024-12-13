@@ -6,12 +6,12 @@ import java.util.List;
 
 public record CreatePedidoRequest(
         Timestamp fecha,
-        int idDocumento,
         BigDecimal total,
         int idDireccion,
         int idMedioPago,
         String observacion,
         int idUsuario,
+        String tipoDocumento,
         List<CreateDetallePedidoRequest> detallePedidos
 ) {
 }

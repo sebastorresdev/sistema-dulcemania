@@ -32,8 +32,8 @@ public class PedidoMapping implements IPedidoMapping{
         MedioPago medioPago = _medioPagoRepository.findById(request.idMedioPago())
                 .orElseThrow(() -> new RuntimeException("Medio pago no encontrada con ID: " + request.idMedioPago()));
 
-        EstadoDocumento estadoDocumento = _estadoDocumentoRepository.findById(request.idDocumento())
-                .orElseThrow(() -> new RuntimeException("Documento no encontrada con ID: " + request.idDocumento()));
+        EstadoDocumento estadoDocumento = _estadoDocumentoRepository.findById(1) /*buscar el documento con id : 1 q es estado pendiente*/
+                .orElseThrow(() -> new RuntimeException("Documento no encontrada con ID: " + 1));
 
         Usuario usuario = _usuarioRepository.findById(request.idUsuario())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrada con ID: " + request.idUsuario()));
@@ -45,6 +45,7 @@ public class PedidoMapping implements IPedidoMapping{
         pedido.setTotal(request.total());
         pedido.setCliente(direccionCliente);
         pedido.setMedioPago(medioPago);
+        pedido.setTipoDocumento(request.tipoDocumento());
         pedido.setObservacion(request.observacion());
 
         List<DetallePedido> detallePedido = request.detallePedidos().stream().map(dp -> convertToDetallePedido(dp, pedido)).toList();
@@ -89,6 +90,7 @@ public class PedidoMapping implements IPedidoMapping{
         pedido.setDocumento(estadoDocumento);
         pedido.setCliente(direccionCliente);
         pedido.setMedioPago(medioPago);
+        pedido.setTipoDocumento(request.tipoDocumento());
         pedido.setObservacion(request.observacion());
 
         List<DetallePedido> detallePedido = request.detallePedidos().stream().map(dp -> convertToDetallePedido(dp, pedido)).toList();
