@@ -2,6 +2,7 @@ package com.api.dulcemaria.services;
 
 import java.util.List;
 
+import com.api.dulcemaria.contracts.clientes.GetClienteResponse;
 import com.api.dulcemaria.helpers.clientes.IClienteMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,11 @@ public class ClienteServicio {
     @Autowired
     IClienteMapping _mapping;
 
-    public List<Cliente> listarClientes() {
-        return (List<Cliente>) _clienteRepository.findAll();
+    public List<GetClienteResponse> listarClientes() {
+        return  _clienteRepository.findAll()
+                .stream()
+                .map(c -> _mapping.convertToGetClienteReponse(c))
+                .toList();
     }
 
     public Cliente guardarCliente(CreateClienteRequest clienteRequest) {

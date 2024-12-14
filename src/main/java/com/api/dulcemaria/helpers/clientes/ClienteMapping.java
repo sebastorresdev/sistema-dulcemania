@@ -2,6 +2,8 @@ package com.api.dulcemaria.helpers.clientes;
 
 import com.api.dulcemaria.contracts.clientes.CreateClienteRequest;
 import com.api.dulcemaria.contracts.clientes.DireccionClienteRequest;
+import com.api.dulcemaria.contracts.clientes.GetClienteResponse;
+import com.api.dulcemaria.contracts.clientes.GetDireccionResponse;
 import com.api.dulcemaria.models.Cliente;
 import com.api.dulcemaria.models.DireccionCliente;
 import com.api.dulcemaria.models.Ubigeo;
@@ -48,4 +50,30 @@ public class ClienteMapping implements IClienteMapping{
 
         return direccionCliente;
     }
+
+    @Override
+    public GetClienteResponse convertToGetClienteReponse(Cliente cliente) {
+
+        return new GetClienteResponse(
+                cliente.getId(),
+                cliente.getRazonSocialNombre(),
+                cliente.getNumeroDocumento(),
+                cliente.getContacto(),
+                cliente.getTelefono(),
+                cliente.getCorreo(),
+                cliente.getDireccionClientes().stream().map(this::convertToGetDireccionResponse).toList()
+        );
+    }
+
+    @Override
+    public GetDireccionResponse convertToGetDireccionResponse(DireccionCliente direccionCliente) {
+
+        return new GetDireccionResponse(
+                direccionCliente.getId(),
+                direccionCliente.getDireccion(),
+                direccionCliente.getUbigeo().getDistrito(),
+                direccionCliente.getReferencia()
+        );
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.api.dulcemaria.controllers;
 
 import com.api.dulcemaria.contracts.clientes.CreateClienteRequest;
+import com.api.dulcemaria.contracts.clientes.GetClienteResponse;
 import com.api.dulcemaria.models.Cliente;
 import com.api.dulcemaria.services.ClienteServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class ClienteController {
 	ClienteServicio _clienteService;
 	
 	@GetMapping()
-	public List<Cliente> listarclientes(){
+	public List<GetClienteResponse> listarclientes(){
 		return _clienteService.listarClientes();
 	}
 
