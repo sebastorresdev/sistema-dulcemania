@@ -38,7 +38,7 @@ public class ProductoController {
             Path path = Paths.get(UPLOAD_DIR + uniqueFileName);
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-            return ResponseEntity.ok(uniqueFileName);
+            return ResponseEntity.ok("\"" + uniqueFileName + "\"");
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error no controlado");
         }

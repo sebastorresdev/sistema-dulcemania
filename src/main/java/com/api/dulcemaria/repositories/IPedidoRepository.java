@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import com.api.dulcemaria.models.Pedido;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface IPedidoRepository extends JpaRepository<Pedido, Integer> {
-
 }

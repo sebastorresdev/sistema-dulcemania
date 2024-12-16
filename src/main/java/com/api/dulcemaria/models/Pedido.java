@@ -32,7 +32,7 @@ public class Pedido {
 	@Column
 	private String observacion;
 	@ManyToOne
-	@JoinColumn(name = "id_usuario", nullable = false)
+	@JoinColumn(name = "id_usuario", referencedColumnName = "identificador", nullable = false)
 	private Usuario usuario;
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<DetallePedido> detallePedidos =new ArrayList<>();

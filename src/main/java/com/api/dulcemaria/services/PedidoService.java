@@ -1,6 +1,8 @@
 package com.api.dulcemaria.services;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.api.dulcemaria.helpers.pedidos.IPedidoMapping;
 import com.api.dulcemaria.contracts.pedidos.CreatePedidoRequest;
@@ -23,11 +25,16 @@ public class PedidoService {
 	@Autowired
 	IPedidoMapping _mapping;
 
-	public List<GetPedidoResponse> listarPedido(){
+	public List<GetPedidoResponse> listarPedido(String identificador){
 
-		List<Pedido> pedidos = (List<Pedido>)_pedidoRepository.findAll();
+		List<Pedido> pedidos = _pedidoRepository.findAll();
 
-		return pedidos.stream().map(p -> _mapping.convertToGetPedidoResponse(p)).toList();
+		List<Pedido> pedidosFiltrados = pedidos.stream()
+				.filter(p -> p.getUsuario() != null && p.getUsuario().getIdentificador().equals(identificador))
+				.collect(Collectors.toList());
+
+
+		return pedidosFiltrados.stream().map(p -> _mapping.convertToGetPedidoResponse(p)).toList();
 	}
 	
 	@Transactional
@@ -64,5 +71,4 @@ public class PedidoService {
 
 	public void registrarVenta(String tipoDocumento) {
 	}
-
 }

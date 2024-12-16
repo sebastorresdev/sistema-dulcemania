@@ -6,7 +6,7 @@ public record CreatePedidoRequest(
         int idDireccion,
         int idMedioPago,
         String observacion,
-        int idUsuario,
+        String idUsuario,
         String tipoDocumento,
         List<CreateDetallePedidoRequest> detallePedidos
 ) {

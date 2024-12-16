@@ -23,10 +23,11 @@ public class PedidoController {
 
 	@Autowired
 	ProductoService _productorService;
-	
-	@GetMapping
-	public ResponseEntity< List<GetPedidoResponse>> listarPedido(){
-		return ResponseEntity.ok(_pedidoService.listarPedido());
+
+
+	@GetMapping("/{identificador}")
+	public ResponseEntity<?> listarPedido(@PathVariable String identificador){
+		return ResponseEntity.ok(_pedidoService.listarPedido(identificador));
 	}
 
 	@PostMapping

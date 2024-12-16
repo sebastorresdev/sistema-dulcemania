@@ -25,7 +25,7 @@ public class ClienteController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Cliente> guardarCliente(@RequestBody CreateClienteRequest request) {
+	public ResponseEntity<GetClienteResponse> guardarCliente(@RequestBody CreateClienteRequest request) {
 		return new ResponseEntity<>(_clienteService.guardarCliente(request), HttpStatus.OK);
 	}
 	

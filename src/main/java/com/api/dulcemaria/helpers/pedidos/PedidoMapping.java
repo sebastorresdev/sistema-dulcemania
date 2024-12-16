@@ -37,7 +37,7 @@ public class PedidoMapping implements IPedidoMapping{
         EstadoDocumento estadoDocumento = _estadoDocumentoRepository.findById(1) /*buscar el documento con id : 1 q es estado pendiente*/
                 .orElseThrow(() -> new RuntimeException("Documento no encontrada con ID: " + 1));
 
-        Usuario usuario = _usuarioRepository.findById(request.idUsuario())
+        Usuario usuario = _usuarioRepository.findById(1)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrada con ID: " + request.idUsuario()));
 
         Pedido pedido = new Pedido();

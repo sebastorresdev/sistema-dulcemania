@@ -13,7 +13,7 @@ public class Usuario {
     @Column
     private String nombreCompleto;
     @Column
-    private String nombreUsuario;
+    private String email;
     @Column
     private String clave;
     @ManyToOne
@@ -21,6 +21,8 @@ public class Usuario {
     private Rol rol;
     @Column
     private boolean esActivo = true;
+    @Column
+    private String identificador;
 
 
     // Constructor
@@ -46,12 +48,12 @@ public class Usuario {
         this.nombreCompleto = nombreCompleto;
     }
 
-    public String getNombreUsuario() {
-        return nombreUsuario;
+    public String getEmail() {
+        return email;
     }
 
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
+    public void setEmail(String nombreUsuario) {
+        this.email = nombreUsuario;
     }
 
     public String getClave() {
@@ -78,5 +80,11 @@ public class Usuario {
         this.esActivo = esActivo;
     }
 
+    public String getIdentificador() {
+        return identificador;
+    }
 
+    public void setIdentificador(String identificador) {
+        this.identificador = identificador;
+    }
 }
